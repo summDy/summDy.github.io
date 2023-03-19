@@ -437,6 +437,94 @@ https://www.youtube.com/watch?v=Vx_SyyfRN6M&list=PLmOn9nNkQxJFs5KfK5ihVgb8nNccfk
 
 ```
 
+https://www.youtube.com/watch?v=ItXbNFH8_LU&list=PLmOn9nNkQxJFs5KfK5ihVgb8nNccfkgxn&index=19
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        在网页中HTML专门来负责网页的结构
+            所以在使用html标签时，应该关注的是标签的语义，而不是它的样式
+
+            标题标签
+                h1 ~ h6 一共有六级标题
+                从h1~h6重要性递减，最重要，h6最不重要
+                h1在网页中的重要性仅次于title标签，
+     -->
+
+     <!-- <h1>一共有六级标题</h1>
+     <h2>二级标题</h2>
+     <h3></h3>
+     <h4></h4>
+     <h5></h5>
+     <h6>六级标题</h6> -->
+
+     <!--
+        块元素（block element）
+            - 在网页中一般通过块元素来对页面进行布局
+
+        行内元素（inline element）
+            - 行内元素主要用来包裹文字
+
+        - 一般情况下会在块元素中放行内元素，而不会再行内元素中块元素
+        - 块元素中基本上什么都能放
+        - p元素中不能放任何的块元素
+
+        浏览器在解析网页时，会自动对网页中不符合规范的内容进行修正
+            比如：
+                标签写在了根元素的外部
+                p元素中嵌套了块元素
+                根元素中出现了除head和body以外的子元素
+     -->
+
+     <!-- 布局标签（结构化语义标签）-->
+     <!-- 
+        header 表示网页的头部 
+        main 表示网页的主体部分（一个页面中只会有一个main）
+        footer 表示网页的底部
+        nav 表示网页中的导航
+        aside 和主体相关的其他内容（侧边栏）
+        article 表示一个独立的文章
+        section 表示一个独立的区块，上边的标签都不能表示使用时使用section
+
+        div 没有语义，就是用来表示一个区块，目前来讲div还是我们主要的布局元素。
+        span 行内(内联)元素，没有任何语义，一般用于在网页中选中文字
+    -->
+
+     <header>
+        <h1>最大标题</h1>
+
+     </header>
+     <!-- 表示网页的主体部分（一个页面中有且只有一个main） -->
+     <main></main>
+
+     <!-- 网页的底部 -->
+     <footer></footer>
+
+     <!-- 网页中的导航 -->
+     <nav></nav>
+
+     <aside></aside>
+
+     <article></article>
+
+     <section>wwww</section>
+
+     <div></div>
+
+     <span></span>
+    
+</body>
+</html>
+```
+
+
+
 
 
 ## *块元素和行内元素
@@ -466,6 +554,143 @@ https://www.youtube.com/watch?v=Pqkn2u1p7Wo&list=PLmOn9nNkQxJFs5KfK5ihVgb8nNccfk
                 根元素中出现了除head和body以外的子元素
      -->
 ```
+
+
+
+## 列表
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        在网页中HTML专门来负责网页的结构
+            所以在使用html标签时，应该关注的是标签的语义，而不是它的样式
+
+            标题标签
+                h1 ~ h6 一共有六级标题
+                从h1~h6重要性递减，最重要，h6最不重要
+                h1在网页中的重要性仅次于title标签，
+     -->
+
+     <!-- <h1>一共有六级标题</h1>
+     <h2>二级标题</h2>
+     <h3></h3>
+     <h4></h4>
+     <h5></h5>
+     <h6>六级标题</h6> -->
+
+     <!--
+        块元素（block element）
+            - 在网页中一般通过块元素来对页面进行布局
+
+        行内元素（inline element）
+            - 行内元素主要用来包裹文字
+
+        - 一般情况下会在块元素中放行内元素，而不会再行内元素中块元素
+        - 块元素中基本上什么都能放
+        - p元素中不能放任何的块元素
+
+        浏览器在解析网页时，会自动对网页中不符合规范的内容进行修正
+            比如：
+                标签写在了根元素的外部
+                p元素中嵌套了块元素
+                根元素中出现了除head和body以外的子元素
+     -->
+
+     <!-- 布局标签（结构化语义标签）-->
+     <!-- 
+        header 表示网页的头部 
+        main 表示网页的主体部分（一个页面中只会有一个main）
+        footer 表示网页的底部
+        nav 表示网页中的导航
+        aside 和主体相关的其他内容（侧边栏）
+        article 表示一个独立的文章
+        section 表示一个独立的区块，上边的标签都不能表示使用时使用section
+
+        div 没有语义，就是用来表示一个区块，目前来讲div还是我们主要的布局元素。
+        span 行内(内联)元素，没有任何语义，一般用于在网页中选中文字
+    -->
+
+     <header>
+        <h1>最大标题</h1>
+
+     </header>
+     <!-- 表示网页的主体部分（一个页面中有且只有一个main） -->
+     <main></main>
+
+     <!-- 网页的底部 -->
+     <footer></footer>
+
+     <!-- 网页中的导航 -->
+     <nav></nav>
+
+     <aside></aside>
+
+     <article></article>
+
+     <section>wwww</section>
+
+     <div></div>
+
+     <span></span>
+
+     <!-- 
+        列表（list）
+            1、铅笔
+            2、笔记本
+            3、橡皮
+        在html中也可以创建列表，html列表一共有三种：
+            有序列表
+            无序列表
+            定义列表
+
+        列表之间可以相互嵌套
+      -->
+
+      <!-- 无序列表 ，相对用的对，在浏览器中看网页的源代码常看到 -->
+      <ul>
+        <li>结构</li>
+        <li>硬件</li>
+        <li>软件</li>
+      </ul>
+      <!-- 有序列表 -->
+      <ol>
+        <li>结构</li>
+        <li>硬件</li>
+        <li>软件</li>
+      </ol>
+
+      <!-- 定义列表，使用dt来表示定义的内容，使用dd来对内容进行解释说明 -->
+      <dl>
+            <dt>结构</dt>
+            <dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
+            <dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
+            <dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
+
+      </dl>
+
+
+
+
+    
+</body>
+</html>
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
