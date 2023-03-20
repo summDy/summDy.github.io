@@ -1,11 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>深圳市伟深亿能科技有限公司</title>
+	<meta charset="UTF-8">
+	<!-- 为了适配移动端 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<meta name="description" content="深圳市伟深伊能科技有限公司专注于产品方案开发, 工业遥控器、IOT产品">
+	<meta name="author" content="深圳市伟深伊能科技有限公司">
+	<title>深圳市伟深伊能科技有限公司</title>
+
+	<!-- <link rel="stylesheet" href="css/home.css" type="text/css"> -->
+
+	<style>
+		body {
+			margin: 0
+		}
+
+		/* 头部样式 */
+		.header {
+			background-color: #f1f1f1;
+			padding: 30px;
+			/* text-align: center; */
+		}
+
+		.header h1 {
+			padding-left: 0px;
+		}
+
+		#id_re {
+			/* padding:30px; */
+			text-align: center;
+
+		}
+
+
+		/* 导航条 */
+		.topnav {
+			overflow: hidden;
+			background-color: #333;
+		}
+
+		/* 导航条链接 */
+		.topnav a {
+			float: left;
+			display: block;
+			color: #f2f2f2;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+
+		.footer {
+			background-color: red;
+			padding: 20px;
+			text-align: center;
+			/* background: #ddd; */
+			margin-top: 20px;
+
+		}
+
+		/* 响应式布局 - 屏幕尺寸小于 800px 时，两列布局改为上下布局 */
+		@media screen and (max-width: 800px) {
+
+			.leftcolumn,
+			.rightcolumn {
+				width: 100%;
+				padding: 0;
+			}
+		}
+
+		/* 响应式布局 -屏幕尺寸小于 400px 时，导航等布局改为上下布局 */
+		@media screen and (max-width: 400px) {
+			.topnav a {
+				float: none;
+				width: 100%;
+			}
+		}
+	</style>
+
+
 </head>
+
 <body>
-    <!-- 
+
+	<div class="header">
+		<div class="h1">
+			<h1>深圳市伟深亿能科技有限公司</h1>
+		</div>
+		<div id="id_re" class="re">
+			<p>我是一个小白，开始制作属于自己的网站，一步一步的学习，一步一步的去优化自己的网页</p>
+		</div>
+
+		<!-- <div class="nav_container">
+			<ul class="nav">
+				<li>
+					<a aria-current="page" href="/home">
+						"首页"
+						<i class="linkHover"></i>
+					</a>
+				</li>
+
+			</ul>
+		</div> -->
+	</div>
+
+	<div class="topnav">
+		<a href="#">
+			首页
+		</a>
+		<a href="#">产品分类</a>
+
+		<a href="#">解决方案</a>
+		<a href="#">解决方案</a>
+
+		<a href="#" style="float:right">联系我们</a>
+	</div>
+
+
+
+	<!-- 表示网页的主体部分（一个页面中有且只有一个main） -->
+	<main id="id_main">
+	
+	</main>
+
+	<aside></aside>
+
+	<article></article>
+
+	<span></span>
+
+	<!-- 
+        列表（list）
+            1、铅笔
+            2、笔记本
+            3、橡皮
+        在html中也可以创建列表，html列表一共有三种：
+            有序列表
+            无序列表
+            定义列表
+
+        列表之间可以相互嵌套
+      -->
+
+	<!-- 无序列表 ，相对用的对，在浏览器中看网页的源代码常看到 -->
+	<ul>
+		<li>结构</li>
+		<li>硬件</li>
+		<li>软件</li>
+	</ul>
+	<!-- 有序列表 -->
+	<ol>
+		<li>结构</li>
+		<li>硬件</li>
+		<li>软件</li>
+	</ol>
+
+	<!-- 定义列表，使用dt来表示定义的内容，使用dd来对内容进行解释说明 -->
+	<dl>
+		<dt>结构</dt>
+		<dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
+		<dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
+		<dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
+
+	</dl>
+
+
+
+	<!-- 网页的底部 -->
+	<!-- <footer>
+		<div id="id_footer" class="maximum-scale">
+			<p>网页的底部</p>
+		</div>
+	</footer> -->
+
+	<div class="footer">
+		<h2>底部区域</h2>
+	</div>
+
+
+
+
+
+
+</body>
+
+</html>
+
+<!-- 
         在网页中HTML专门来负责网页的结构
             所以在使用html标签时，应该关注的是标签的语义，而不是它的样式
 
@@ -15,14 +197,14 @@
                 h1在网页中的重要性仅次于title标签，
      -->
 
-     <!-- <h1>一共有六级标题</h1>
+<!-- <h1>一共有六级标题</h1>
      <h2>二级标题</h2>
      <h3></h3>
      <h4></h4>
      <h5></h5>
      <h6>六级标题</h6> -->
 
-     <!--
+<!--
         块元素（block element）
             - 在网页中一般通过块元素来对页面进行布局
 
@@ -40,8 +222,8 @@
                 根元素中出现了除head和body以外的子元素
      -->
 
-     <!-- 布局标签（结构化语义标签）-->
-     <!-- 
+<!-- 布局标签（结构化语义标签）-->
+<!-- 
         header 表示网页的头部 
         main 表示网页的主体部分（一个页面中只会有一个main）
         footer 表示网页的底部
@@ -53,72 +235,3 @@
         div 没有语义，就是用来表示一个区块，目前来讲div还是我们主要的布局元素。
         span 行内(内联)元素，没有任何语义，一般用于在网页中选中文字
     -->
-
-     <header>
-        <h1>最大标题</h1>
-
-     </header>
-     <!-- 表示网页的主体部分（一个页面中有且只有一个main） -->
-     <main></main>
-
-     <!-- 网页的底部 -->
-     <footer></footer>
-
-     <!-- 网页中的导航 -->
-     <nav></nav>
-
-     <aside></aside>
-
-     <article></article>
-
-     <section id="" class="" style="background: #000;color:blueviolet " >
-        wwww
-    </section>
-
-     <div id="" class="maximum-scale" style="background: #0a07a5;color:red;height: 500px;">
-        <p>你知道我是谁</p>
-     </div>
-
-     <span></span>
-
-     <!-- 
-        列表（list）
-            1、铅笔
-            2、笔记本
-            3、橡皮
-        在html中也可以创建列表，html列表一共有三种：
-            有序列表
-            无序列表
-            定义列表
-
-        列表之间可以相互嵌套
-      -->
-
-      <!-- 无序列表 ，相对用的对，在浏览器中看网页的源代码常看到 -->
-      <ul>
-        <li>结构</li>
-        <li>硬件</li>
-        <li>软件</li>
-      </ul>
-      <!-- 有序列表 -->
-      <ol>
-        <li>结构</li>
-        <li>硬件</li>
-        <li>软件</li>
-      </ol>
-
-      <!-- 定义列表，使用dt来表示定义的内容，使用dd来对内容进行解释说明 -->
-      <dl>
-            <dt>结构</dt>
-            <dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
-            <dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
-            <dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
-
-      </dl>
-
-
-
-
-    
-</body>
-</html>
