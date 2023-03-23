@@ -22,7 +22,7 @@
 		/* 头部样式 */
 		.header {
 			background-image: url(../img/headerBackgroud.jpg);
-			background: f;
+			background-size: 100% 100%;
 			padding: 30px;
 
 			/* text-align: center; */
@@ -89,13 +89,12 @@
 <body>
 
 	<div class="header">
+
 		<div class="h1">
 			<h1>深圳市伟深伊能科技有限公司</h1>
 		</div>
-		<div id="id_re" class="re">
-			<p>我是一个小白，开始制作属于自己的网站，一步一步的学习，一步一步的去优化自己的网页</p>
-		</div>
-		<!-- <img src="./img/team/1.jpg" alt=""> -->
+
+
 	</div>
 
 	<div class="topnav">
@@ -109,59 +108,50 @@
 		<a href="https://shop57562170.taobao.com" target="_blank">淘宝商店</a>
 		<a href="https://www.baidu.com" target="_blank">百度首页</a>
 
-		<a href="#" style="float:right">联系我们</a>
+		<a href="#">联系我们</a>
 	</div>
 
-
-
-	<!-- 表示网页的主体部分（一个页面中有且只有一个main） -->
-	<main id="id_main">
-
-	</main>
-
-	<aside></aside>
-
-	<article></article>
-
-	<span></span>
-
-	<!-- 
-        列表（list）
-            1、铅笔
-            2、笔记本
-            3、橡皮
-        在html中也可以创建列表，html列表一共有三种：
-            有序列表
-            无序列表
-            定义列表
-
-        列表之间可以相互嵌套
-      -->
-
-
-
-
-	<div id="menu" style="background-color:#FFD700;height:1000px;width:100px;float:left;">
+	<div id="menu" style="background-color:#ebdc87;height:1000px;width:100px;float:left;">
+		<div id="id_re" class="re">
+			<p>我是一个小白，开始制作属于自己的网站，一步一步的学习，一步一步的去优化自己的网页</p>
+		</div>
 		<b>菜单</b><br>
 		HTML<br>
 		CSS<br>
 		JavaScript
-
-
-
 	</div>
 
 	<div id="content" style="background-color:#EEEEEE;height:1000px;width:1000px;float:left;">
-		内容在这里
+
 		<!-- 定义列表，使用dt来表示定义的内容，使用dd来对内容进行解释说明 -->
 		<dl>
-			<dt>结构</dt>
-			<dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
-			<dd>结构表示网页的结构，结构用来规定网页中哪里是标题，哪里是段落</dd>
-
+			<dt>艺术的核心在于表现</dt>
 		</dl>
 
+
+		<!-- 
+		audio 标签用来向页面中引入一个外部的音频文件的
+			音视频文件引入时，默认情况下不允许用户自己控制播放停止
+
+		属性：
+			controls 是否运行用户控制播放
+			autoplay 音频文件是否自动播放
+				- 如果设置了autoplay 则音乐在打开页面时会自动播放
+					但是目前来讲大部分浏览器都不会自动对音乐进行自动播放
+			loop 音乐是否循环播放
+	 -->
+		<audio controls>
+			<!-- 对不起，您的浏览器不支持播放音频！请升级浏览器 -->
+			<!-- 如下表示主要是为了解决浏览器不兼容的问题 -->
+			<source src="./audio/西海情歌.mp3">
+			<source src="./audio/西海情歌.ogg">
+			<embed src="./audio/西海情歌.mp3" type="audio/mp3" width="300">
+		</audio>
+
+
+
 	</div>
+
 	<div id="right" style="background-color:#adabab;color:#FFFFFF;height:1000px;width:100px;float:right;">
 		信息内容
 
@@ -178,24 +168,6 @@
 
 
 	<!-- 
-		audio 标签用来向页面中引入一个外部的音频文件的
-			音视频文件引入时，默认情况下不允许用户自己控制播放停止
-
-		属性：
-			controls 是否运行用户控制播放
-			autoplay 音频文件是否自动播放
-				- 如果设置了autoplay 则音乐在打开页面时会自动播放
-					但是目前来讲大部分浏览器都不会自动对音乐进行自动播放
-			loop 音乐是否循环播放
-	 -->
-	<audio controls>
-		<!-- 对不起，您的浏览器不支持播放音频！请升级浏览器 -->
-		<!-- 如下表示主要是为了解决浏览器不兼容的问题 -->
-		<source src="./audio/西海情歌.mp3">
-		<source src="./audio/西海情歌.ogg">
-		<embed src="./audio/西海情歌.mp3" type="audio/mp3" width="300">
-	</audio>
-	<!-- 
 		使用video标签来向网页中引入一个视频
 			- 使用方式跟audio基本上一样
 	-->
@@ -205,17 +177,15 @@
 
 
 	</video>
-	<iframe frameborder="0" src="https://v.qq.com/txp/iframe/player.html?vid=b0045hnw1ki" allowFullScreen="true"></iframe>
+	<iframe frameborder="0" src="https://v.qq.com/txp/iframe/player.html?vid=b0045hnw1ki"
+		allowFullScreen="true"></iframe>
+
+
 
 	<!-- 网页的底部，使用div元素 -->
 	<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
 		版权 © 深圳市伟深伊能科技有限公司
 	</div>
-
-
-
-
-
 
 </body>
 
