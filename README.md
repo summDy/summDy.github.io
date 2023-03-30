@@ -776,13 +776,111 @@ https://www.youtube.com/watch?v=egmyh81Y1YQ&list=PLmOn9nNkQxJFs5KfK5ihVgb8nNccfk
 
 
 
+### 选择器
+
+https://www.w3school.com.cn/css/css_selectors.asp
+
+CSS选择器用于"查找"（或选取）要设置样式的HTML元素。
+
+我们可以将 CSS 选择器分为五类：
+
+- 简单选择器（根据名称、id、类来选取元素）
+- [组合器选择器](https://www.w3school.com.cn/css/css_combinators.asp)（根据它们之间的特定关系来选取元素）
+- [伪类选择器](https://www.w3school.com.cn/css/css_pseudo_classes.asp)（根据特定状态选取元素）
+- [伪元素选择器](https://www.w3school.com.cn/css/css_pseudo_elements.asp)（选取元素的一部分并设置其样式）
+- [属性选择器](https://www.w3school.com.cn/css/css_attribute_selectors.asp)（根据属性或属性值来选取元素）
+
+
+
+border 边框
+
 
 
 
 
 # JavaScript
 
+
+
+## 历史
+
+https://wangdoc.com/javascript/basic/history#:~:text=1995%E5%B9%B412%E6%9C%884,%E5%86%85%E7%BD%AE%E4%BA%86JavaScript%20%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80%E3%80%82
+
+JavaScript 的基本语法和对象体系，是模仿 Java 而设计的。但是，JavaScript 没有采用 Java 的静态类型。正是因为 JavaScript 与 Java 有很大的相似性，
+
+JavaScript 语言的函数是一种独立的数据类型，以及采用基于原型对象（prototype）的继承链。这是它与 Java 语法最大的两点区别。JavaScript 语法要比 Java 自由得多。
+
+
+
+### 关键的时间节点
+
+2004年，**<u>Dojo 框架</u>**诞生，为不同浏览器提供了同一接口，并为主要功能提供了便利的调用方法。这标志着 JavaScript 编程框架的时代开始来临。
+
+2006年，Google推出 Google Web Toolkit 项目（缩写为 GWT），提供 Java 编译成 JavaScript 的功能，开创了将其他语言转为 JavaScript 的先河。
+
+
+
+2012年，微软发布 TypeScript 语言。该语言被设计成 JavaScript 的超集，这意味着所有 JavaScript 程序，都可以不经修改地在 TypeScript 中运行。同时，TypeScript 添加了很多新的语法特性，主要目的是为了开发大型程序，然后还可以被编译成 JavaScript 运行。
+
+
+
+2015年3月，Facebook 公司发布了 React Native 项目，将 React 框架移植到了手机端，可以用来开发手机 App。它会将 JavaScript 代码转为 iOS 平台的 Objective-C 代码，或者 Android 平台的 Java 代码，从而为 JavaScript 语言开发高性能的原生 App 打开了一条道路。
+
+
+
+https://wangdoc.com/javascript/
+
+
+
+
+
+## 概述
+
+https://javascript.ruanyifeng.com/introduction/intro.html
+
+
+
+
+
+## 实验环境
+
+JavaScript的上手非常方便，只要电脑安装了浏览器，就可以用来实验了。只要打开Chrome浏览器的“开发者工具”（Developer Tools），就可以在它的“控制台”（console）运行JavaScript代码。
+
+进入“控制台”，有两种方法。
+
+快捷键方式，在Chrome浏览器中，直接按Option + Command + J (Mac) 或者 Ctrl + shift + J (Windows/Linux)。
+
+菜单方式，从“工具”（Tools）菜单中打开“开发者工具”，然后点击Console选项卡。“开发者工具”的快捷键是F12，或者option + Command + I (Mac) and Ctrl + shift + I (Windows / Linux) 
+
+进入控制台以后，就可以在提示符后输入代码，然后按Enter键，代码就会执行。如果shift + Enter键，就是代码换行，不会触发执行。
+
+
+
+
+
+
+
 用于响应用户操作
+
+
+
+https://www.youtube.com/watch?v=3eLw3flIC9M
+
+最简单的应用，图片轮播
+
+```
+//获取容器
+var pics =document.getElementById("pics");
+var n=1;
+
+//设置时钟控件
+setInterval(function(){
+	//alert(n);
+	if(n>4) n =1
+	pics.innerHTML="<img src='img/a%20("+n+").jpg' />";
+	n++;
+},2000);
+```
 
 
 
