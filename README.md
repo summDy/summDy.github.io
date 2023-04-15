@@ -1,40 +1,4 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/summDy/WeiShenYiNeng.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/summDy/WeiShenYiNeng.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
 
 
 # github.io的入门
@@ -78,6 +42,40 @@ WWW（World Wide Web）
 </html>
 ```
 
+网页源代码的第一行非常适合这类面试，因为候选人对于DOCTYPE的了解程度基本上能反映出他们的经验。我还记得当年Dreamweaver流行的时候，需要编写一串XHTML DOCTYPE，就像2009年Chris在文章《The Common DOCTYPES》中列出的一样（[https://css-tricks.com/snippets/html/the-common-doctypes/](https://link.zhihu.com/?target=https%3A//css-tricks.com/snippets/html/the-common-doctypes/)）。
+
+**最佳答案**：这一行是文档类型定义，所有HTML文件的第一行必须这么写。有人可能会认为这行代码是多余的，因为浏览器已经知道响应的MIME类型是text/html，但在Netscape和Internet Explorer的时代，有许多不同的HTML标准，因此浏览器很难判断应该遵照哪个标准来渲染页面。
+
+这一点非常烦人，因为每个标准都会生成不同的布局，这才需要使用这个标签，帮助浏览器进行渲染。以前，DOCTYPE非常长，而且还会包含标准的连接（就像今天的SVG文件那样），但幸运的是，这种简洁的<!DOCTYPE html>成为了HTML 5的标准，并延续至今。
+
+**可以接受的答案**：这是DOCTYPE标签，让浏览器知道这是一个HTML 5网页，并应按照HTML 5渲染。
+
+```
+<html dir="ltr" lang="zh-CN">
+```
+
+这一行可以判断出候选人是否了解可访问性和本地化。令人惊讶的是，我面试过的人中很少有人知道dir属性，但这个属性能引发有关屏幕阅读器的讨论。几乎每个人都能判断出lang="en"属性的含义，即使他们从未用过。
+
+**最佳答案**：这是HTML文档的根元素，其他元素都位于该元素之内。它有两个属性：方向和语言。方向属性的值为“从左到右”，告诉用户代理内容的方向；这个值也可以是“从右到左”，比如阿拉伯语；或者是“auto”，让浏览器自行判断方向。
+
+lang（语言）属性指明了该标签内的所有代码都是英语。你可以将这个值设置成任何语言标签，甚至可以区分en-us和en-gb。它也可以帮助屏幕阅读器判断该用哪种语言来读出文字。
+
+
+
+
+
+
+
+https://zhuanlan.zhihu.com/p/519044728
+
+
+
+# 标签
+
+总共有多少个标签？
+
+https://html5.tool.webfrontend.dev/
+
 
 
 ## head标签
@@ -94,11 +92,101 @@ title是干嘛的？，不在网页中，出现在标题栏
 
 
 
-
-
 ## body标签
 
 网页的可见内容，希望用户看到的。都在body中
+
+
+
+## 常用标签
+
+### 段落标签和换行标签
+
+#### 【段落标签】
+
+```
+<p>我是一个段落标签</p>
+```
+
+单词paragraph的缩写，意为段落。
+
+因为像一长段文字，在html文档中，用enter换行就可以形成下一段书写文字（这在Word文档也是一样），然而在浏览器解析后我们看到的并没有分段落。
+
+所以这里就可以使用段落标签来处理。
+
+```
+<p>单词paragraph的缩写，意为段落。</p>
+
+<p>因为像一长段文字，在html文档中，用enter换行就可以形成下一段书写文字（这在Word文档也是一样），然而在浏览器解析后我们看到的并没有分段落。</p>
+
+所以这里就可以使用段落标签来处理。</p>
+```
+
+特点：
+
+1. 文本在一个段落中会根据浏览器窗口的大小自动换行。
+
+2. 段落和段落之间保有间隙。
+
+   
+
+
+
+#### 【换行标签】
+
+```
+在HTML中，一个段落中的文字会从左到右依次排列，直到浏览器窗口的右端，然后才自动换行。如果希望某段文本强制换行显示，就需要使用换行标签<br />
+```
+
+单词break的缩写，意为打断、换行。
+
+标签语义：强制换行。
+
+**特点：**
+
+1. 是单标签
+
+2. 只是简单的开始新的一行，跟段落不一样，段落之间会插入一些垂直的间距。
+
+   
+
+应用案例
+
+https://www.youtube.com/watch?v=wyv3eY4r86k&list=PLKLUwbV5J_7e22Cd0qfD51ceUAL23ObVc&index=16
+
+
+
+### 文本格式化标签
+
+https://www.youtube.com/watch?v=mxhT3fQsW3s&list=PLKLUwbV5J_7e22Cd0qfD51ceUAL23ObVc&index=17
+
+
+
+### div和span标签
+
+https://www.youtube.com/watch?v=PWwDB4HE_WY&list=PLKLUwbV5J_7e22Cd0qfD51ceUAL23ObVc&index=18
+
+div是division的缩写，表示分割、分区
+
+
+
+### 图片标签
+
+https://www.youtube.com/watch?v=WJOcrJIemGc&list=PLKLUwbV5J_7e22Cd0qfD51ceUAL23ObVc&index=19
+
+```
+<a href="跳转目标" target="目标窗口的弹出方式"> 文本或图像 </a>
+```
+
+单词anchor的缩写，意为：锚
+
+href 属性，用于指定链接目标的url地址，（必须属性）当为标签应用href属性时，它就具有了超链接的功能
+
+target   用于指定链接页面的打开方式，其中_self为默认值，_blank为在新窗口中打开方式。
+
+
+
+
 
 
 
@@ -688,9 +776,17 @@ https://www.youtube.com/watch?v=Pqkn2u1p7Wo&list=PLmOn9nNkQxJFs5KfK5ihVgb8nNccfk
 
 https://www.youtube.com/watch?v=YxBzY-fpl4I&list=PLmOn9nNkQxJFs5KfK5ihVgb8nNccfkgxn&index=20
 
+#### 锚点链接
+
+
+
+
+
 ### 相对路径
 
 https://www.youtube.com/watch?v=X6tDL17rRGQ&list=PLmOn9nNkQxJFs5KfK5ihVgb8nNccfkgxn&index=21
+
+### 
 
 
 
@@ -837,8 +933,6 @@ https://wangdoc.com/javascript/
 ## 概述
 
 https://javascript.ruanyifeng.com/introduction/intro.html
-
-
 
 
 
