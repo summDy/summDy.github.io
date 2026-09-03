@@ -1,0 +1,42 @@
+[
+  {
+    "title": "YSD-MB2DL-100 光伏 DTU",
+    "summary": "基于 AT32F403AVGT7 的光伏数据采集终端，跑 RT-Thread，负责 DLT698 协议解析与 DL/T645 转换。",
+    "tags": ["AT32F403A", "RT-Thread", "DLT698"],
+    "year": "2026",
+    "status": "在研",
+    "link": "https://github.com/summDy"
+  },
+  {
+    "title": "WSYN 无线数据采集平台",
+    "summary": "ATmega128 + FreeRTOS，集成 LoRa (M-HL10) 与 ZigBee (CC2420) 双无线链路，支持 SHT3x 温湿度采集与 OTA。",
+    "tags": ["ATmega128", "FreeRTOS", "LoRa", "ZigBee"],
+    "year": "2025",
+    "status": "已完成",
+    "link": "https://github.com/summDy"
+  },
+  {
+    "title": "XJF_StrideFreqDAQ 步频采集",
+    "summary": "STC8A8K64D4 主控的步频数据采集终端，配合上位机做 gait 数据分析。",
+    "tags": ["STC8A8K64D4", "数据采集", "传感器"],
+    "year": "2025",
+    "status": "已完成",
+    "link": "https://github.com/summDy"
+  },
+  {
+    "title": "UltrasonicRadar 超声波雷达",
+    "summary": "STM8S103F3P 驱动的 4 通道超声波泊车雷达，IAR 开发，配套 Altium 硬件工程。",
+    "tags": ["STM8S", "IAR", "Altium"],
+    "year": "2024",
+    "status": "已完成",
+    "link": "https://github.com/summDy"
+  },
+  {
+    "title": "QS_B50TC 影视灯 DMX512 控制器",
+    "summary": "五色 LED 影视灯控制器固件，DMX512 调光，运行在 xyOS 上。",
+    "tags": ["DMX512", "LED 调光", "xyOS"],
+    "year": "2024",
+    "status": "已完成",
+    "link": "https://github.com/summDy"
+  }
+]

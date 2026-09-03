@@ -1,127 +1,183 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>技术文章与作品展示</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/marked@4.0.12/marked.min.js"></script>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>summDy · 嵌入式固件工程师</title>
+<meta name="description" content="summDy 的个人站点：嵌入式固件开发笔记、项目展示与在线名片。">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9881;</text></svg>">
+
+<link rel="stylesheet" href="assets/vendor/hljs-github.min.css" id="hljs-light">
+<link rel="stylesheet" href="assets/vendor/hljs-github-dark.min.css" id="hljs-dark" disabled>
+<link rel="stylesheet" href="assets/css/style.css">
+
+<script>
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    if (!saved && typeof window.matchMedia === 'function') {
+      saved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-    main {
-      flex: 1 0 auto;
-      min-height: calc(100vh - 160px); /* 确保内容区至少占满视口减去header和footer的高度 */
-    }
-    footer {
-      flex-shrink: 0;
-      background-color: #1f2937; /* 对应bg-gray-800 */
-      color: white;
-      padding: 1rem 0;
-      width: 100%;
-    }
-    .article-content img { max-width: 100%; height: auto; }
-    .article-content pre { background: #f4f4f4; padding: 1rem; border-radius: 5px; }
-  </style>
+    document.documentElement.dataset.theme = saved || 'light';
+  })();
+</script>
 </head>
-<body class="bg-gray-100 font-sans">
-  <header class="bg-blue-600 text-white py-6">
-    <div class="container mx-auto px-4">
-      <h1 class="text-3xl font-bold">我的技术博客与作品</h1>
-      <p class="mt-2">分享技术文章，展示个人项目</p>
-    </div>
-  </header>
 
-  <nav class="bg-gray-800 text-white py-4">
-    <div class="container mx-auto px-4 flex justify-between">
-      <a href="#articles" class="hover:underline">文章</a>
-      <a href="#projects" class="hover:underline">作品</a>
-      <a href="#about" class="hover:underline">关于</a>
-    </div>
-  </nav>
+<body>
+<div class="progress-bar" id="progressBar"></div>
 
-  <main class="container mx-auto px-4 py-8">
-    <section id="articles" class="mb-12">
-      <h2 class="text-2xl font-semibold mb-4">技术文章</h2>
-      <div id="article-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- 文章列表动态生成 -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#/">
+      <span class="brand-mark" id="brandMark">S</span>
+      <span class="brand-text" id="brandText">summDy</span>
+    </a>
+
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#about">关于</a>
+      <a href="#projects">项目</a>
+      <a href="#blog">笔记</a>
+    </nav>
+
+    <button class="icon-btn" id="themeToggle" type="button" aria-label="切换深浅色">
+      <svg class="i-sun" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4.2"/>
+        <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>
+      </svg>
+      <svg class="i-moon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- ============ 首页 ============ -->
+  <div id="viewHome">
+
+    <section class="hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="pulse"></span>
+            <span id="heroEyebrow"></span>
+          </p>
+          <h1 class="hero-title">
+            你好，我是 <span class="grad" id="heroName">summDy</span>
+          </h1>
+          <p class="hero-role" id="heroRole"></p>
+          <p class="hero-tagline" id="heroTagline"></p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#blog">读我的笔记</a>
+            <a class="btn btn-ghost" id="heroGithub" href="https://github.com/summDy" target="_blank" rel="noopener">
+              <svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-2.92-.88-2.92-2.9 0-.6.21-1.15.56-1.57-.06-.14-.24-.72.05-1.5 0 0 .62-.2 2.03.77a4.9 4.9 0 0 1 2.5 0c1.4-.97 2.02-.77 2.02-.77.3.78.11 1.36.06 1.5.35.42.56.97.56 1.57 0 2.03-1.15 2.7-2.93 2.9.3.26.56.76.56 1.54 0 1.11-.01 2-.01 2.27 0 .21.15.46.55.38A7.99 7.99 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="term" aria-hidden="true">
+          <div class="term-bar">
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+            <span class="term-title">build.log</span>
+          </div>
+          <div class="term-body" id="termBody"></div>
+        </div>
       </div>
     </section>
 
-    <section id="projects" class="mb-12">
-      <h2 class="text-2xl font-semibold mb-4">作品展示</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-lg shadow">
-          <h3 class="text-xl font-bold">项目一</h3>
-          <p class="mt-2">一个简单的Web应用，使用React和Tailwind CSS构建。</p>
-          <a href="https://github.com/yourusername/project1" class="text-blue-600 hover:underline">查看代码</a>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow">
-          <h3 class="text-xl font-bold">项目二</h3>
-          <p class="mt-2">基于Python的数据分析工具，支持可视化。</p>
-          <a href="https://github.com/yourusername/project2" class="text-blue-600 hover:underline">查看代码</a>
+    <section class="section" id="about" data-reveal>
+      <div class="wrap">
+        <p class="sec-eyebrow">01 / 关于</p>
+        <h2 class="sec-title">一点自我介绍</h2>
+        <div class="about-grid">
+          <p class="about-text" id="aboutText"></p>
+          <div class="skill-groups" id="skillGroups"></div>
         </div>
       </div>
     </section>
 
-    <section id="about">
-      <h2 class="text-2xl font-semibold mb-4">关于我</h2>
-      <p class="bg-white p-6 rounded-lg shadow">我是[你的名字]，一名热爱技术的开发者，专注于Web开发和数据科学。欢迎探索我的文章和项目！</p>
+    <section class="section section-soft" id="projects" data-reveal>
+      <div class="wrap">
+        <p class="sec-eyebrow">02 / 项目</p>
+        <h2 class="sec-title">做过的东西</h2>
+        <div class="cards" id="projectCards"></div>
+      </div>
     </section>
-  </main>
 
-  <footer class="bg-gray-800 text-white py-4">
-    <div class="container mx-auto px-4 text-center">
-      <p>&copy; 2025 [你的名字]. 保留所有权利。</p>
+    <section class="section" id="blog" data-reveal>
+      <div class="wrap">
+        <p class="sec-eyebrow">03 / 笔记</p>
+        <h2 class="sec-title">技术笔记</h2>
+
+        <div class="blog-toolbar" id="blogToolbar" hidden>
+          <label class="search">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/>
+            </svg>
+            <input type="search" id="searchInput" placeholder="搜索标题、摘要或标签…" aria-label="搜索文章">
+          </label>
+          <div class="tag-filter" id="tagFilter"></div>
+        </div>
+
+        <div class="post-list" id="postList"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ 文章页 ============ -->
+  <div id="viewPost" hidden>
+    <div class="wrap post-wrap">
+      <a class="back-link" href="#/">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5M11 18l-6-6 6-6"/>
+        </svg>
+        返回首页
+      </a>
+
+      <article class="post">
+        <header class="post-head">
+          <h1 class="post-title" id="postTitle"></h1>
+          <div class="post-meta" id="postMeta"></div>
+        </header>
+
+        <div class="post-layout">
+          <div class="post-body markdown" id="postBody"></div>
+          <aside class="post-toc" id="postToc" hidden>
+            <p class="toc-title">目录</p>
+            <nav id="tocNav"></nav>
+          </aside>
+        </div>
+      </article>
     </div>
-  </footer>
+  </div>
+</main>
 
-  <script>
-    // 模拟文章数据（实际可从Markdown文件加载）
-    const articles = [
-      { title: '文章标题1', summary: '这是我的第一篇技术文章...', file: 'article1.md' },
-      { title: '文章标题2', summary: '深入探讨某个技术话题...', file: 'article2.md' }
-    ];
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <p id="footerLeft">© <span id="year"></span> summDy</p>
+    <p class="footer-right">
+      纯静态 · 无框架 · 托管于 GitHub Pages
+    </p>
+  </div>
+</footer>
 
-    // 动态加载文章列表
-    const articleList = document.getElementById('article-list');
-    articles.forEach(article => {
-      const articleCard = document.createElement('div');
-      articleCard.className = 'bg-white p-6 rounded-lg shadow';
-      articleCard.innerHTML = `
-        <h3 class="text-xl font-bold">${article.title}</h3>
-        <p class="mt-2">${article.summary}</p>
-        <a href="#${article.file}" class="text-blue-600 hover:underline">阅读全文</a>
-      `;
-      articleCard.addEventListener('click', () => loadArticle(article.file));
-      articleList.appendChild(articleCard);
-    });
+<button class="to-top" id="toTop" type="button" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
 
-    // 加载Markdown文章内容
-    async function loadArticle(file) {
-      const response = await fetch(`articles/${file}`);
-      const markdown = await response.text();
-      const content = marked.parse(markdown);
-      const main = document.querySelector('main');
-      main.innerHTML = `
-        <section class="article-content bg-white p-6 rounded-lg shadow">
-          <h2 class="text-2xl font-semibold mb-4">文章内容</h2>
-          ${content}
-          <button onclick="backToHome()" class="mt-4 text-blue-600 hover:underline">返回</button>
-        </section>
-      `;
-    }
+<noscript>
+  <p style="padding:24px;text-align:center">这个站点需要 JavaScript 来加载内容与渲染 Markdown。</p>
+</noscript>
 
-    // 返回主页
-    function backToHome() {
-      window.location.reload();
-    }
-  </script>
+<script src="assets/vendor/marked.min.js"></script>
+<script src="assets/vendor/highlight.min.js"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>
