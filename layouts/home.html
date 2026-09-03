@@ -1,0 +1,12 @@
+{{ define "body-class" }}template-home{{ end }}
+
+{{ define "main" }}
+    {{/* 门面 Landing 层：定位 → 能力 → 案例 → 产品 → 最新笔记 */}}
+    {{ partial "home/hero" . }}
+    {{ partial "home/capabilities" . }}
+    {{ partial "home/portfolio" . }}
+    {{ partial "home/shop" . }}
+    {{ partial "home/latest-posts" . }}
+
+    {{- partial "footer/footer" . -}}
+{{ end }}

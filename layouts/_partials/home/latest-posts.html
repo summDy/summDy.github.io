@@ -1,0 +1,24 @@
+{{- $posts := first 6 (where .Site.RegularPages "Section" "post") -}}
+{{- with $posts }}
+<section class="landing-section">
+    <div class="landing-section-head">
+        <h2 class="landing-section-title">技术笔记</h2>
+        <a class="landing-more" href="/archives/">
+            <span>全部文章</span>
+            {{ partial "helper/icon" "chevron-right" }}
+        </a>
+    </div>
+
+    <ul class="post-brief-list">
+        {{ range . }}
+            <li class="post-brief-item">
+                <a href="{{ .RelPermalink }}">
+                    <span class="post-brief-title">{{ .Title }}</span>
+                    {{ with .Description }}<span class="post-brief-desc">{{ . }}</span>{{ end }}
+                    <time class="post-brief-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+                </a>
+            </li>
+        {{ end }}
+    </ul>
+</section>
+{{- end -}}

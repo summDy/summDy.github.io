@@ -1,0 +1,576 @@
+/* ==========================================================================
+   自定义样式 —— 覆盖主题默认
+   本文件由 Stack 主题自动引入，无需在 HTML 里手动 link
+   ========================================================================== */
+
+/* 字体：去掉 Google Fonts（国内不可达），改用系统字体栈。
+   中文优先 PingFang / 微软雅黑，等宽字体带上中文回退。 */
+:root {
+    --sys-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    --base-font-family: var(--sys-font-family);
+    --code-font-family: "JetBrains Mono", Menlo, Monaco, Consolas, "Courier New",
+        "PingFang SC", "Microsoft YaHei", monospace;
+    --article-font-family: var(--base-font-family);
+}
+
+/* --------------------------------------------------------------------------
+   Pagefind 搜索 UI —— 适配 Stack 主题的卡片风格与深浅双主题
+   -------------------------------------------------------------------------- */
+:root {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--accent-color);
+    --pagefind-ui-text: var(--card-text-color-main);
+    --pagefind-ui-background: var(--card-background);
+    --pagefind-ui-border: var(--card-separator-color);
+    --pagefind-ui-tag: var(--body-background);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: var(--card-border-radius);
+    --pagefind-ui-font: var(--base-font-family);
+}
+
+#pagefind-search {
+    /* 搜索框在深色模式下默认背景偏灰，强制跟随主题 */
+    .pagefind-ui__search-input {
+        background-color: var(--card-background);
+        color: var(--card-text-color-main);
+        border-color: var(--card-separator-color);
+    }
+
+    .pagefind-ui__search-clear {
+        background-color: transparent;
+    }
+
+    /* 结果条目对齐主题的文章列表观感 */
+    .pagefind-ui__result {
+        border-top: 1px solid var(--card-separator-color);
+        padding: 16px 0;
+    }
+
+    .pagefind-ui__result-title {
+        font-size: 1.7rem;
+        font-weight: 600;
+    }
+
+    .pagefind-ui__result-link {
+        color: var(--card-text-color-main);
+        text-decoration: none;
+
+        &:hover {
+            color: var(--accent-color);
+        }
+    }
+
+    .pagefind-ui__result-excerpt {
+        color: var(--card-text-color-secondary);
+        font-size: 1.5rem;
+        line-height: 1.7;
+    }
+
+    /* Pagefind 用 <mark> 高亮命中词，去掉自带的黄底，改为主色加粗 */
+    mark {
+        background: transparent;
+        color: var(--accent-color);
+        font-weight: 600;
+    }
+
+    .pagefind-ui__button {
+        color: var(--card-text-color-main);
+        border-color: var(--card-separator-color);
+
+        &:hover {
+            background-color: var(--card-background-selected);
+        }
+    }
+
+    .pagefind-ui__message {
+        color: var(--card-text-color-secondary);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Mermaid 图 —— 居中并限制最大宽度，避免超宽画布撑破正文
+   -------------------------------------------------------------------------- */
+.article-content {
+    .mermaid {
+        display: block;
+        text-align: center;
+        overflow-x: auto;
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
+
+/* --------------------------------------------------------------------------
+   代码块 —— 行号与代码分隔更清晰，长行允许横向滚动
+   -------------------------------------------------------------------------- */
+.highlight {
+    max-width: 100%;
+    overflow-x: auto;
+
+    table td:nth-child(1) pre {
+        /* 行号列在浅色/深色下都降低对比度，避免抢视线 */
+        opacity: 0.55;
+        user-select: none;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   工作室门面 —— Landing 各区块
+   颜色一律走主题变量，深浅双模式自动跟随
+   -------------------------------------------------------------------------- */
+
+.landing-hero {
+    padding: 10px 0 30px;
+    margin-bottom: var(--section-separation);
+    border-bottom: 1px solid var(--card-separator-color);
+}
+
+.hero-eyebrow {
+    margin: 0 0 8px;
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--accent-color);
+}
+
+.hero-title {
+    margin: 0 0 14px;
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--card-text-color-main);
+}
+
+.hero-intro {
+    margin: 0 0 20px;
+    max-width: 62ch;
+    font-size: 1.6rem;
+    line-height: 1.85;
+    color: var(--card-text-color-secondary);
+}
+
+.hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    margin: 0 0 24px;
+    list-style: none;
+
+    li {
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: var(--card-background-selected);
+        color: var(--card-text-color-secondary);
+        font-size: 1.3rem;
+    }
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: var(--card-border-radius);
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+
+    .icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+    }
+}
+
+.btn-primary {
+    border: 1px solid var(--accent-color);
+    background: var(--accent-color);
+    color: var(--accent-color-text);
+}
+
+.btn-ghost {
+    border: 1px solid var(--card-separator-color);
+    background: transparent;
+    color: var(--card-text-color-main);
+
+    &:hover {
+        background: var(--card-background-selected);
+    }
+}
+
+.landing-section {
+    margin-bottom: var(--section-separation);
+}
+
+.landing-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.landing-section-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--card-text-color-main);
+}
+
+.landing-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 1.4rem;
+    color: var(--accent-color);
+    text-decoration: none;
+
+    .icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+/* 能力卡片 */
+.capability-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.capability-card {
+    padding: 20px;
+    border: 1px solid var(--card-separator-color);
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    transition: transform 0.15s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+.capability-title {
+    margin: 0 0 8px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--card-text-color-main);
+}
+
+.capability-desc {
+    margin: 0 0 12px;
+    font-size: 1.4rem;
+    line-height: 1.7;
+    color: var(--card-text-color-secondary);
+}
+
+.capability-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li {
+        padding: 2px 8px;
+        border: 1px solid var(--card-separator-color);
+        border-radius: var(--tag-border-radius);
+        color: var(--card-text-color-tertiary);
+        font-size: 1.2rem;
+    }
+}
+
+/* 案例卡片 */
+.case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.case-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--card-separator-color);
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    text-decoration: none;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+
+    &:hover {
+        border-color: var(--accent-color);
+        transform: translateY(-3px);
+    }
+}
+
+.case-cover {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--card-background-selected), var(--body-background));
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.case-cover-placeholder {
+    padding: 0 20px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--card-text-color-tertiary);
+}
+
+.case-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px 18px 18px;
+}
+
+.case-title {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--card-text-color-main);
+}
+
+.case-summary {
+    margin: 0;
+    font-size: 1.4rem;
+    line-height: 1.7;
+    color: var(--card-text-color-secondary);
+}
+
+.case-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0;
+    margin: 4px 0 0;
+    list-style: none;
+
+    li {
+        padding: 2px 8px;
+        border-radius: var(--tag-border-radius);
+        background: var(--card-background-selected);
+        color: var(--card-text-color-secondary);
+        font-family: var(--code-font-family);
+        font-size: 1.2rem;
+    }
+}
+
+.case-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: auto 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--card-separator-color);
+    color: var(--card-text-color-tertiary);
+    font-size: 1.3rem;
+}
+
+/* 商品卡片 —— 淘宝导流 */
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.shop-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--card-separator-color);
+    border-radius: var(--card-border-radius);
+    background: var(--card-background);
+    text-decoration: none;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+
+    &:hover {
+        border-color: var(--accent-color);
+        transform: translateY(-3px);
+    }
+}
+
+.shop-cover {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--card-background-selected);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.shop-cover-placeholder {
+    color: var(--card-text-color-tertiary);
+    font-size: 1.4rem;
+}
+
+.shop-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 2px 8px;
+    border-radius: var(--tag-border-radius);
+    background: var(--accent-color);
+    color: var(--accent-color-text);
+    font-size: 1.2rem;
+}
+
+.shop-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px 16px;
+}
+
+.shop-title {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: var(--card-text-color-main);
+    font-size: 1.5rem;
+    font-weight: 500;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.shop-summary {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: var(--card-text-color-tertiary);
+    font-size: 1.3rem;
+    line-height: 1.6;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.shop-foot {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.shop-price {
+    color: var(--accent-color);
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.shop-cat {
+    color: var(--card-text-color-tertiary);
+    font-size: 1.2rem;
+}
+
+/* 最新笔记 —— 用紧凑列表，和上面的卡片区分区分层次 */
+.post-brief-list {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--card-separator-color);
+    list-style: none;
+}
+
+.post-brief-item {
+    border-bottom: 1px solid var(--card-separator-color);
+
+    a {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        padding: 14px 4px;
+        text-decoration: none;
+        transition: padding-left 0.15s ease;
+
+        &:hover {
+            padding-left: 10px;
+        }
+    }
+}
+
+.post-brief-title {
+    flex-shrink: 0;
+    color: var(--card-text-color-main);
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.post-brief-desc {
+    overflow: hidden;
+    color: var(--card-text-color-tertiary);
+    font-size: 1.3rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.post-brief-date {
+    flex-shrink: 0;
+    margin-left: auto;
+    color: var(--card-text-color-tertiary);
+    font-family: var(--code-font-family);
+    font-size: 1.3rem;
+}
+
+.portfolio-intro {
+    margin-bottom: 24px;
+    color: var(--card-text-color-secondary);
+    font-size: 1.6rem;
+    line-height: 1.85;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.6rem;
+    }
+
+    .post-brief-desc {
+        display: none;
+    }
+
+    .capability-grid,
+    .case-grid,
+    .shop-grid {
+        grid-template-columns: 1fr;
+    }
+}

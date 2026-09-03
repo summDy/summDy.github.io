@@ -1,0 +1,18 @@
+{{- $cases := where .Site.RegularPages "Section" "portfolio" -}}
+{{- $cases = sort $cases "Params.weight" "asc" -}}
+{{- $featured := first 3 (where $cases "Params.featured" true) -}}
+{{- with $featured -}}
+<section class="landing-section">
+    <div class="landing-section-head">
+        <h2 class="landing-section-title">做过的项目</h2>
+        <a class="landing-more" href="/portfolio/">
+            <span>查看全部</span>
+            {{ partial "helper/icon" "chevron-right" }}
+        </a>
+    </div>
+
+    <div class="case-grid">
+        {{ range . }}{{ partial "case-card" . }}{{ end }}
+    </div>
+</section>
+{{- end -}}

@@ -1,0 +1,198 @@
+baseURL                = "https://summdy.github.io/"
+locale                 = "zh-CN"
+defaultContentLanguage = "zh"
+# 中文站点必须开启，否则摘要截断和字数统计会算错
+hasCJKLanguage         = true
+title                  = "summDy 工作室"
+theme                  = "hugo-theme-stack"
+
+enableRobotsTXT = true
+paginate        = 10
+
+[permalinks]
+    # content/post/stm32/xxx.md  ->  /post/stm32/xxx/
+    post = "/post/:sections[1:]/:slug/"
+    page = "/:slug/"
+    portfolio = "/portfolio/:slug/"
+
+[taxonomies]
+    category = "categories"
+    tag      = "tags"
+
+[params]
+    mainSections   = ["post", "portfolio"]
+    rssFullContent = true
+    favicon        = "favicon.svg"
+
+    # ------------------------------------------------------------------
+    # 工作室门面 —— 首页 Hero 与能力展示区
+    # 店铺地址、联系方式目前是占位，请按实际情况修改
+    # ------------------------------------------------------------------
+    [params.studio]
+        name    = "summDy 工作室"
+        tagline = "嵌入式固件开发 · 硬件方案设计 · 协议与逆向分析"
+        intro   = "专注电力、光伏与工业物联网方向的嵌入式固件开发。从器件选型、原理图评审到量产固件交付，提供整机方案设计、协议栈实现、MCU 固件开发与疑难问题攻关。"
+
+        # 主推转化入口：标准品走淘宝成交，定制需求走直谈
+        shopName = "逛淘宝店铺"
+        shopURL  = "https://shop.taobao.com"
+        contact  = ""
+
+        # Hero 下方的能力标签
+        highlights = ["电力 / 光伏", "工业通信", "物联网终端", "固件逆向"]
+
+        [[params.studio.capabilities]]
+            title = "固件开发"
+            desc  = "MCU 固件、RTOS 应用、外设驱动与通信协议栈实现"
+            tags  = ["ARM Cortex-M", "RT-Thread", "FreeRTOS"]
+
+        [[params.studio.capabilities]]
+            title = "方案设计"
+            desc  = "器件选型、原理图评审、功耗与成本权衡、量产支持"
+            tags  = ["选型", "原理图", "量产"]
+
+        [[params.studio.capabilities]]
+            title = "协议与逆向"
+            desc  = "电力协议解析与转换、固件逆向、通信抓包与故障定位"
+            tags  = ["DLT645", "DLT698", "Modbus", "Ghidra"]
+
+        [[params.studio.capabilities]]
+            title = "疑难攻关"
+            desc  = "HardFault、OTA 升级、低功耗与长期稳定性问题定位"
+            tags  = ["调试", "OTA", "功耗"]
+
+    [params.sidebar]
+        emoji    = "🛠"
+        subtitle = "嵌入式固件 · 逆向分析 · 通信协议"
+        # 头像：把图片放到 static/img/avatar.png 后取消下一行注释
+        # avatar = "img/avatar.png"
+
+    [params.footer]
+        since = 2026
+        # 备案信息，有就填，没有就留空
+        # customText = ""
+
+    [params.article]
+        math        = false
+        toc         = true
+        readingTime = true
+
+        [params.article.license]
+            enabled = true
+            default = "本文采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 许可协议，转载请注明出处。"
+
+        [params.article.mermaid]
+            # Mermaid 主题跟随站点明暗模式切换
+            lightTheme = "default"
+            darkTheme  = "dark"
+            securityLevel = "strict"
+            look          = "classic"
+
+    [params.widgets]
+        homepage = [
+            { type = "search" },
+            { type = "archives", params = { limit = 5 } },
+            { type = "categories", params = { limit = 10 } },
+            { type = "tag-cloud", params = { limit = 25 } },
+        ]
+        page = [{ type = "toc" }]
+
+    [params.comments]
+        # Giscus 需要先把 repoID / categoryID 填进来才能启用，见 README「开启评论」
+        enabled  = false
+        provider = "giscus"
+
+        [params.comments.giscus]
+            repo             = "summDy/summDy.github.io"
+            repoID           = ""
+            category         = "Announcements"
+            categoryID       = ""
+            mapping          = "pathname"
+            strict           = true
+            reactionsEnabled = true
+            emitMetadata     = false
+            inputPosition    = "bottom"
+            lightTheme       = "light"
+            darkTheme        = "dark"
+            lang             = "zh-CN"
+            loading          = "lazy"
+
+    [params.pagefind]
+        # Pagefind 搜索，构建时生成索引，无需外部服务
+        enabled = true
+
+[markup]
+    [markup.goldmark]
+        [markup.goldmark.renderer]
+            # 允许在 Markdown 里写 HTML（Mermaid、提示块等需要）
+            unsafe = true
+
+    [markup.highlight]
+        # noClasses 必须为 false：用 CSS 类而非内联样式，主题才能自动适配明暗模式
+        # 不设 style：主题自带 monokai（暗）/ monokailight（亮）两套配色
+        noClasses          = false
+        codeFences         = true
+        guessSyntax        = false
+        lineNoStart        = 1
+        lineNos            = true
+        lineNumbersInTable = true
+        tabWidth           = 4
+
+    [markup.tableOfContents]
+        startLevel = 2
+        endLevel   = 4
+        ordered    = false
+
+[menu]
+    [[menu.main]]
+        identifier = "home"
+        name       = "首页"
+        url        = "/"
+        weight     = 1
+
+        [menu.main.params]
+            icon = "home"
+
+    [[menu.main]]
+        identifier = "portfolio"
+        name       = "作品集"
+        url        = "/portfolio/"
+        weight     = 2
+
+        [menu.main.params]
+            icon = "briefcase"
+
+    [[menu.main]]
+        identifier = "archives"
+        name       = "技术笔记"
+        url        = "/archives/"
+        weight     = 3
+
+        [menu.main.params]
+            icon = "archives"
+
+    [[menu.main]]
+        identifier = "about"
+        name       = "服务与合作"
+        url        = "/about/"
+        weight     = 4
+
+        [menu.main.params]
+            icon = "user"
+
+    [[menu.main]]
+        identifier = "search"
+        name       = "搜索"
+        url        = "/search/"
+        weight     = 5
+
+        [menu.main.params]
+            icon = "search"
+
+[[social]]
+    identifier = "github"
+    name       = "GitHub"
+    url        = "https://github.com/summDy"
+
+    [social.params]
+        icon = "brand-github"

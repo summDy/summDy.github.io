@@ -1,0 +1,44 @@
+{{- $shop := hugo.Data.shop -}}
+{{- $cats := $shop.categories -}}
+{{- $featured := first 4 (where $shop.items "featured" true) -}}
+{{- with $featured }}
+<section class="landing-section">
+    <div class="landing-section-head">
+        <h2 class="landing-section-title">店铺在售</h2>
+        {{ with site.Params.studio.shopURL }}
+            <a class="landing-more" href="{{ . }}" target="_blank" rel="noopener noreferrer">
+                <span>进入店铺</span>
+                {{ partial "helper/icon" "shopping-bag" }}
+            </a>
+        {{ end }}
+    </div>
+
+    <div class="shop-grid">
+        {{ range $item := . }}
+            {{- $catName := "" -}}
+            {{- range $c := $cats }}{{ if eq $c.id $item.category }}{{ $catName = $c.name }}{{ end }}{{ end }}
+
+            <a class="shop-card" href="{{ $item.url }}" target="_blank" rel="noopener noreferrer">
+                <div class="shop-cover">
+                    {{ with $item.image }}
+                        <img src="{{ . | relURL }}" alt="{{ $item.title }}" loading="lazy" />
+                    {{ else }}
+                        <span class="shop-cover-placeholder">{{ with $catName }}{{ . }}{{ else }}商品{{ end }}</span>
+                    {{ end }}
+                    {{ with $item.badge }}<span class="shop-badge">{{ . }}</span>{{ end }}
+                </div>
+
+                <div class="shop-body">
+                    <h3 class="shop-title">{{ $item.title }}</h3>
+                    {{ with $item.summary }}<p class="shop-summary">{{ . }}</p>{{ end }}
+
+                    <div class="shop-foot">
+                        <span class="shop-price">{{ $item.price }}</span>
+                        <span class="shop-cat">{{ with $catName }}{{ . }}{{ end }}</span>
+                    </div>
+                </div>
+            </a>
+        {{ end }}
+    </div>
+</section>
+{{- end -}}

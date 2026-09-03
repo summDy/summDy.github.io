@@ -1,0 +1,27 @@
+{{ define "body-class" }}template-portfolio{{ end }}
+
+{{ define "main" }}
+    <header>
+        <div class="section-card">
+            <div class="section-details">
+                <h3 class="section-count">{{ len .Pages }} 个案例</h3>
+                <h1 class="section-term">{{ .Title }}</h1>
+                {{ with .Params.description }}<h2 class="section-description">{{ . }}</h2>{{ end }}
+            </div>
+        </div>
+    </header>
+
+    {{ with .Content }}<div class="portfolio-intro">{{ . }}</div>{{ end }}
+
+    <div class="case-grid">
+        {{ range sort .Pages "Params.weight" "asc" }}
+            {{ partial "case-card" . }}
+        {{ end }}
+    </div>
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
+{{ end }}

@@ -1,0 +1,27 @@
+<a class="case-card" href="{{ .RelPermalink }}">
+    <div class="case-cover">
+        {{ with .Params.cover }}
+            <img src="{{ . | relURL }}" alt="{{ $.Title }}" loading="lazy" />
+        {{ else }}
+            <span class="case-cover-placeholder">{{ .Title }}</span>
+        {{ end }}
+    </div>
+
+    <div class="case-body">
+        <h3 class="case-title">{{ .Title }}</h3>
+        {{ with .Params.summary }}<p class="case-summary">{{ . }}</p>{{ end }}
+
+        {{ with .Params.stack }}
+            <ul class="case-stack">
+                {{ range first 4 . }}<li>{{ . }}</li>{{ end }}
+            </ul>
+        {{ end }}
+
+        {{ if or .Params.role .Params.outcome }}
+            <p class="case-meta">
+                {{ with .Params.role }}<span>{{ . }}</span>{{ end }}
+                {{ with .Params.outcome }}<span>{{ . }}</span>{{ end }}
+            </p>
+        {{ end }}
+    </div>
+</a>

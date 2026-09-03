@@ -1,0 +1,53 @@
+{
+  "_说明": "淘宝商品卡片。改完保存即可，无需碰 HTML。图片放 static/img/shop/ 下，image 填相对路径（img/shop/xxx.jpg）；没有图片就留空，会自动显示占位块。url 填淘宝商品详情页链接。",
+
+  "categories": [
+    { "id": "module", "name": "硬件模块" },
+    { "id": "device", "name": "成品设备" },
+    { "id": "service", "name": "技术服务" },
+    { "id": "agent", "name": "代理经销" }
+  ],
+
+  "items": [
+    {
+      "title": "示例商品：4 通道超声波测距模块",
+      "category": "module",
+      "summary": "占位数据，请替换为真实商品。这里写一两句核心卖点，控制在 30 字内。",
+      "price": "¥88 起",
+      "image": "",
+      "url": "https://item.taobao.com/item.htm?id=",
+      "badge": "",
+      "featured": true
+    },
+    {
+      "title": "示例商品：光伏数据采集终端",
+      "category": "device",
+      "summary": "占位数据，请替换为真实商品。写清适用场景与交付内容。",
+      "price": "¥面议",
+      "image": "",
+      "url": "https://item.taobao.com/item.htm?id=",
+      "badge": "",
+      "featured": true
+    },
+    {
+      "title": "示例服务：嵌入式固件定制开发",
+      "category": "service",
+      "summary": "占位数据。服务类写清交付物、周期与验收方式。",
+      "price": "按需求报价",
+      "image": "",
+      "url": "https://item.taobao.com/item.htm?id=",
+      "badge": "",
+      "featured": true
+    },
+    {
+      "title": "示例商品：代理产品线",
+      "category": "agent",
+      "summary": "占位数据，请替换为真实商品。",
+      "price": "¥--",
+      "image": "",
+      "url": "https://item.taobao.com/item.htm?id=",
+      "badge": "",
+      "featured": false
+    }
+  ]
+}

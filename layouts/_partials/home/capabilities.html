@@ -1,0 +1,19 @@
+{{- $studio := .Site.Params.studio -}}
+{{- with $studio.capabilities -}}
+<section class="landing-section">
+    <h2 class="landing-section-title">能帮你做什么</h2>
+    <div class="capability-grid">
+        {{ range . }}
+            <div class="capability-card">
+                <h3 class="capability-title">{{ .title }}</h3>
+                {{ with .desc }}<p class="capability-desc">{{ . }}</p>{{ end }}
+                {{ with .tags }}
+                    <ul class="capability-tags">
+                        {{ range . }}<li>{{ . }}</li>{{ end }}
+                    </ul>
+                {{ end }}
+            </div>
+        {{ end }}
+    </div>
+</section>
+{{- end -}}

@@ -1,0 +1,69 @@
+name: 部署 Hugo 站点到 GitHub Pages
+
+on:
+  push:
+    branches: ["master"]
+  # 允许在 Actions 页面手动触发
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同时只允许一次部署，排队中的稍后跑，避免互相覆盖
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.165.0
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          # 需要完整历史，Hugo 要用 .GitInfo 取最后更新时间
+          fetch-depth: 0
+
+      - name: 安装 Hugo Extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.165.0"
+          extended: true
+
+      - name: 配置 Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: 构建站点
+        env:
+          HUGO_ENVIRONMENT: production
+          HUGO_ENV: production
+        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: 生成 Pagefind 搜索索引
+        # 版本与本地一致（本地用 npm i pagefind 装的），避免 CI 拉到不兼容的新版
+        run: npx -y pagefind@1.5.2 --site public --output-subdir pagefind
+
+      - name: 上传产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

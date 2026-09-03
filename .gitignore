@@ -1,3 +1,11 @@
+# Hugo 构建产物
+public/
+resources/
+.hugo_build.lock
+
+# Pagefind 生成的搜索索引（每次构建重新生成）
+static/pagefind/
+
 # VSCode
 .vscode/
 

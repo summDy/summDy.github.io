@@ -1,0 +1,35 @@
+{{- $studio := .Site.Params.studio -}}
+{{- if not $studio -}}{{- return -}}{{- end -}}
+
+<section class="landing-hero">
+    {{ with $studio.tagline }}<p class="hero-eyebrow">{{ . }}</p>{{ end }}
+    {{ with $studio.name }}<h1 class="hero-title">{{ . }}</h1>{{ end }}
+    {{ with $studio.intro }}<p class="hero-intro">{{ . }}</p>{{ end }}
+
+    {{ with $studio.highlights }}
+        <ul class="hero-tags">
+            {{ range . }}<li>{{ . }}</li>{{ end }}
+        </ul>
+    {{ end }}
+
+    <div class="hero-actions">
+        {{ with $studio.shopURL }}
+            <a class="btn btn-primary" href="{{ . }}" target="_blank" rel="noopener noreferrer">
+                {{ partial "helper/icon" "shopping-bag" }}
+                <span>{{ with $studio.shopName }}{{ . }}{{ else }}进入店铺{{ end }}</span>
+            </a>
+        {{ end }}
+
+        {{- $contact := $studio.contact -}}
+        {{- $href := "" -}}
+        {{- if and $contact (strings.Contains $contact "@") -}}
+            {{- $href = printf "mailto:%s" $contact -}}
+        {{- else if and $contact (hasPrefix $contact "http") -}}
+            {{- $href = $contact -}}
+        {{- end -}}
+        <a class="btn btn-ghost" href="{{ with $href }}{{ . }}{{ else }}/about/{{ end }}">
+            {{ partial "helper/icon" "messages" }}
+            <span>{{ if $contact }}聊聊定制需求{{ else }}了解服务与合作{{ end }}</span>
+        </a>
+    </div>
+</section>

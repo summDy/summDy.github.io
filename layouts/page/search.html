@@ -1,0 +1,89 @@
+{{ define "body-class" }}template-search{{ end }}
+
+{{ define "head" }}
+    {{- with .OutputFormats.Get "json" -}}
+        <link rel="preload" href="{{ .RelPermalink }}" as="fetch" crossorigin="anonymous">
+    {{- end -}}
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+{{ end }}
+
+{{ define "main" }}
+<div class="search-switch">
+    {{/* Pagefind 区块：需要构建时生成索引，本地 hugo server 下会自动隐藏 */}}
+    <div id="pagefind-search" hidden>
+        <div id="pf-search"></div>
+    </div>
+
+    {{/* Fuse 区块：主题自带，本地与线上都可用，作为回退 */}}
+    <div id="fuse-search">
+        <form action="{{ .RelPermalink }}" class="search-form"{{ with .OutputFormats.Get "json" }} data-json="{{ .RelPermalink }}"{{ end }}>
+            <p>
+                <label>{{ T "search.title" }}</label>
+                <input name="keyword" placeholder="{{ T `search.placeholder` }}" />
+
+                <button title="{{ T `search.title` }}">
+                    {{ partial "helper/icon" "search" }}
+                </button>
+            </p>
+        </form>
+
+        <div class="search-result hidden">
+            <h3 class="search-result--title section-title"></h3>
+            <div class="search-result--list article-list--compact"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.searchResultTitleTemplate = "{{ T `search.resultTitle` }}"
+</script>
+
+{{- $opts := dict "minify" hugo.IsProduction "JSXFactory" "createElement" -}}
+{{- $searchScript := resources.Get "ts/search.tsx" | js.Build $opts -}}
+<script type="text/javascript" src="{{ $searchScript.RelPermalink }}" defer></script>
+
+<script>
+    // 探测 Pagefind 索引是否存在：存在则用 Pagefind（中文分词更好），
+    // 否则保留主题自带的 Fuse 搜索（本地 hugo server 预览场景）。
+    (function () {
+        var pfBlock = document.getElementById('pagefind-search');
+        var fuseBlock = document.getElementById('fuse-search');
+        if (!pfBlock || !fuseBlock) return;
+
+        fetch('/pagefind/pagefind-entry.json', { method: 'HEAD', cache: 'no-store' })
+            .then(function (res) {
+                if (!res.ok) throw new Error('no index');
+                var s = document.createElement('script');
+                s.src = '/pagefind/pagefind-ui.js';
+                s.onload = function () {
+                    new window.PagefindUI({
+                        element: '#pf-search',
+                        showImages: false,
+                        showSubResults: true,
+                        pageSize: 10,
+                        translations: {
+                            placeholder: '输入关键词...',
+                            clear_search: '清除',
+                            load_more: '加载更多',
+                            search_label: '搜索本站',
+                            filters_label: '筛选',
+                            zero_results: '没有找到与 [SEARCH_TERM] 相关的内容',
+                            many_results: '找到 [COUNT] 条与 [SEARCH_TERM] 相关的内容',
+                            one_result: '找到 [COUNT] 条与 [SEARCH_TERM] 相关的内容',
+                            alt_search: '[COUNT] 条结果里没有匹配 [SEARCH_TERM]，显示全部结果',
+                            search_suggestion: '没有匹配 [SEARCH_TERM] 的内容，试试这些搜索词：',
+                            searching: '正在搜索 [SEARCH_TERM]...'
+                        }
+                    });
+                    pfBlock.hidden = false;
+                    fuseBlock.hidden = true;
+                };
+                s.onerror = function () { /* 加载失败就继续用 Fuse */ };
+                document.body.appendChild(s);
+            })
+            .catch(function () { /* 无索引，保持 Fuse */ });
+    })();
+</script>
+
+{{ partialCached "footer/footer" . }}
+{{ end }}
