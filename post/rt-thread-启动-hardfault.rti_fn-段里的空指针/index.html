@@ -1,0 +1,104 @@
+<!doctype html><html lang=zh-CN dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="上电后在 rt_components_board_init 里直接崩，多半是链接脚本把 .rti_fn 段丢了。记一下三步定位法。"><title>RT-Thread 启动 HardFault：.rti_fn 段里的空指针</title><link rel=canonical href=https://summdy.github.io/post/rt-thread-%E5%90%AF%E5%8A%A8-hardfault.rti_fn-%E6%AE%B5%E9%87%8C%E7%9A%84%E7%A9%BA%E6%8C%87%E9%92%88/><link rel=stylesheet href=/scss/style.min.d5c339b451a2ebfc1735ad314f77f20881302243059f4d5fbcc4a05a67526905.css><meta property='og:title' content="RT-Thread 启动 HardFault：.rti_fn 段里的空指针"><meta property='og:description' content="上电后在 rt_components_board_init 里直接崩，多半是链接脚本把 .rti_fn 段丢了。记一下三步定位法。"><meta property='og:url' content='https://summdy.github.io/post/rt-thread-%E5%90%AF%E5%8A%A8-hardfault.rti_fn-%E6%AE%B5%E9%87%8C%E7%9A%84%E7%A9%BA%E6%8C%87%E9%92%88/'><meta property='og:site_name' content='summDy 工作室'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='RT-Thread'><meta property='article:tag' content='HardFault'><meta property='article:tag' content='调试'><meta property='article:tag' content='链接脚本'><meta property='article:published_time' content='2026-09-03T00:00:00+00:00'><meta property='article:modified_time' content='2026-09-03T00:00:00+00:00'><meta name=twitter:title content="RT-Thread 启动 HardFault：.rti_fn 段里的空指针"><meta name=twitter:description content="上电后在 rt_components_board_init 里直接崩，多半是链接脚本把 .rti_fn 段丢了。记一下三步定位法。"><link rel="shortcut icon" href=favicon.svg></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><div class=site-meta><h1 class=site-name><a href=/>summDy 工作室</a></h1><h2 class=site-description>嵌入式固件 · 逆向分析 · 通信协议</h2></div></header><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/portfolio/><svg class="icon icon-tabler icon-tabler-briefcase" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M3 7m0 2a2 2 0 012-2h14a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg>
+<span>作品集</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>技术笔记</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>服务与合作</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav class=toc-nav id=TableOfContents><ul><li><a href=#现象>现象</a></li><li><a href=#原理rt-thread-的自动初始化机制>原理：RT-Thread 的自动初始化机制</a></li><li><a href=#根因分散加载文件把段丢了>根因：分散加载文件把段丢了</a></li><li><a href=#快速自检三步>快速自检三步</a><ul><li><a href=#1-看-map-文件里有没有这个段>1. 看 map 文件里有没有这个段</a></li><li><a href=#2-直接看-flash-内容>2. 直接看 Flash 内容</a></li><li><a href=#3-检查哨兵之间的跨度>3. 检查哨兵之间的跨度</a></li></ul></li><li><a href=#另一种坑c-里的静态初始化顺序>另一种坑：C++ 里的静态初始化顺序</a></li><li><a href=#小结>小结</a></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article data-pagefind-body><header class=article-header><div class=article-details><header class=article-category><a href=/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/ style=background-color:#beefdb;color:#0f3d2b>嵌入式</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/post/rt-thread-%E5%90%AF%E5%8A%A8-hardfault.rti_fn-%E6%AE%B5%E9%87%8C%E7%9A%84%E7%A9%BA%E6%8C%87%E9%92%88/>RT-Thread 启动 HardFault：.rti_fn 段里的空指针</a></h2><h3 class=article-subtitle>上电后在 rt_components_board_init 里直接崩，多半是链接脚本把 .rti_fn 段丢了。记一下三步定位法。</h3></div><footer class=article-meta><div class=inline-meta><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published datetime=2026-09-03T00:00:00Z>2026年9月3日星期四</time>
+<svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 3 分钟</time></div></footer></div></header><aside class=article-toc><details><summary><div class=article-toc-title><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6-6 6"/></svg>
+<span>目录</span></div></summary><nav class=toc-nav><ul><li><a href=#现象>现象</a></li><li><a href=#原理rt-thread-的自动初始化机制>原理：RT-Thread 的自动初始化机制</a></li><li><a href=#根因分散加载文件把段丢了>根因：分散加载文件把段丢了</a></li><li><a href=#快速自检三步>快速自检三步</a><ul><li><a href=#1-看-map-文件里有没有这个段>1. 看 map 文件里有没有这个段</a></li><li><a href=#2-直接看-flash-内容>2. 直接看 Flash 内容</a></li><li><a href=#3-检查哨兵之间的跨度>3. 检查哨兵之间的跨度</a></li></ul></li><li><a href=#另一种坑c-里的静态初始化顺序>另一种坑：C++ 里的静态初始化顺序</a></li><li><a href=#小结>小结</a></li></ul></nav></details></aside><section class=article-content><p>上电后在 <code>rt_components_board_init()</code> 里直接 HardFault，挂死时 PC 停在一个明显不是函数的地址。这类问题在把 RT-Thread 移植到新 BSP、或者换过分散加载文件之后特别常见，排查思路记一下。</p><h2 id=现象>现象</h2><p>仿真器连上，全速跑，进 HardFault。Call Stack 大致是：</p><pre tabindex=0><code>rt_components_board_init()
+  -&gt; 0x00000000   (或 0xFFFFFFFF / 一段乱地址)
+</code></pre><p>如果停在 <code>0x00000000</code>、<code>0xFFFFFFFF</code>，或者某个明显落在 Flash 空区的地址，基本可以确定：<strong>函数指针本身是坏的，不是函数内部崩的</strong>。</p><h2 id=原理rt-thread-的自动初始化机制>原理：RT-Thread 的自动初始化机制</h2><p>RT-Thread 用宏把初始化函数"注册"到一个自定义段里，启动时遍历这个段依次调用。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cm>/* 展开后大致是这样 */</span>
+</span></span><span class=line><span class=cl><span class=cp>#define INIT_BOARD_EXPORT(fn)                                        \
+</span></span></span><span class=line><span class=cl><span class=cp>    const init_fn_t __rt_init_##fn SECTION(&#34;.rti_fn.1&#34;) = fn
+</span></span></span></code></pre></td></tr></table></div></div><p><code>__rt_init_##fn</code> 是个<strong>函数指针变量</strong>，放到 <code>.rti_fn.N</code> 段。启动时的遍历逻辑：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>void</span> <span class=nf>rt_components_board_init</span><span class=p>(</span><span class=kt>void</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>const</span> <span class=kt>init_fn_t</span> <span class=o>*</span><span class=n>fn_ptr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=n>fn_ptr</span> <span class=o>=</span> <span class=o>&amp;</span><span class=n>__rt_init_rti_board_start</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>         <span class=n>fn_ptr</span> <span class=o>&lt;</span> <span class=o>&amp;</span><span class=n>__rt_init_rti_board_end</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>         <span class=n>fn_ptr</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=o>*</span><span class=n>fn_ptr</span><span class=p>)();</span>        <span class=cm>/* 这里崩 */</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>关键点：</p><ul><li>编译器保证同一段内的变量<strong>按名字排序</strong>放置，于是 <code>__rt_init_rti_board_start</code> / <code>__rt_init_rti_board_end</code> 就成了这个段的"哨兵"</li><li>段内每一项都是一个函数指针，大小 4 字节（Cortex-M）</li><li><code>(*fn_ptr)()</code> 从 Flash 里<strong>取值再跳转</strong>——取到什么就跳什么，没有任何校验</li></ul><p>所以一旦段内容是空的（全 <code>0x00</code> 或全 <code>0xFF</code>），跳过去就是 HardFault。</p><h2 id=根因分散加载文件把段丢了>根因：分散加载文件把段丢了</h2><p>最常见的原因是 <code>.sct</code>（Keil）/ <code>.ld</code>（GCC）里<strong>没有显式保留 <code>.rti_fn*</code> 段</strong>，链接器认为它没被引用，直接丢弃了。</p><p>Keil 的 <code>.sct</code> 里必须显式写上：</p><pre tabindex=0><code>LR_IROM1 0x08000000 0x00100000  {
+  ER_IROM1 0x08000000 0x00100000  {
+    *.o (RESET, +First)
+    *(InRoot$$Sections)
+    .ANY (+RO)
+    .ANY (+XO)           ; ARMCC 6 需要
+  }
+  ...
+}
+</code></pre><p>注意 <code>.ANY (+RO)</code> 理论上能收进去，但如果开了 <strong>link-time 优化或者 gc-sections</strong>，<code>.rti_fn</code> 这种"只被指针引用"的数据段经常被判定为不可达而删掉。稳妥写法是显式列出来：</p><pre tabindex=0><code>    *(.rti_fn*)
+    *(InRoot$$Sections)
+</code></pre><p>GCC 的 <code>.ld</code> 对应位置：</p><pre tabindex=0><code class=language-ld data-lang=ld>    .text :
+    {
+        *(.text*)
+        KEEP(*(.rti_fn*))     /* KEEP 是关键 */
+    } &gt; FLASH
+</code></pre><p><code>KEEP()</code> 会阻止 <code>--gc-sections</code> 删除该段。</p><h2 id=快速自检三步>快速自检三步</h2><h3 id=1-看-map-文件里有没有这个段>1. 看 map 文件里有没有这个段</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>grep -i <span class=s2>&#34;rti_fn&#34;</span> build/*.map
+</span></span></code></pre></td></tr></table></div></div><p>如果没有任何输出，或者只有 <code>start</code> / <code>end</code> 两个哨兵而没有中间项——<strong>段被丢了</strong>。</p><h3 id=2-直接看-flash-内容>2. 直接看 Flash 内容</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 假设哨兵符号地址已知</span>
+</span></span><span class=line><span class=cl>arm-none-eabi-nm build/*.elf <span class=p>|</span> grep rti_fn
+</span></span></code></pre></td></tr></table></div></div><p>拿到 <code>__rt_init_rti_board_start</code> 地址后，在调试器里 dump 那片内存。如果全是 <code>0xFF</code>（未擦写）或 <code>0x00</code>，确认无疑。</p><p>正常应该看到一串递增的、落在 <code>.text</code> 区间的地址值。</p><h3 id=3-检查哨兵之间的跨度>3. 检查哨兵之间的跨度</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cm>/* 临时加个调试打印 */</span>
+</span></span><span class=line><span class=cl><span class=nf>rt_kprintf</span><span class=p>(</span><span class=s>&#34;board: %p -&gt; %p, count=%d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>           <span class=o>&amp;</span><span class=n>__rt_init_rti_board_start</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>           <span class=o>&amp;</span><span class=n>__rt_init_rti_board_end</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>           <span class=p>(</span><span class=kt>int</span><span class=p>)(</span><span class=o>&amp;</span><span class=n>__rt_init_rti_board_end</span> <span class=o>-</span> <span class=o>&amp;</span><span class=n>__rt_init_rti_board_start</span><span class=p>));</span>
+</span></span></code></pre></td></tr></table></div></div><p>如果 <code>count</code> 是 0 或者是个离谱的大数，说明段布局有问题。</p><h2 id=另一种坑c-里的静态初始化顺序>另一种坑：C++ 里的静态初始化顺序</h2><p>如果是 C++ 工程，还有一种情况是初始化函数本身还没构造好就被调用了。这种情况不会是空指针，而是跳进去了但成员变量是乱的。判据是 <strong>PC 落在合法函数内，但数据不对</strong>——这就不是本节的问题了。</p><h2 id=小结>小结</h2><div class=table-wrapper><table><thead><tr><th>现象</th><th>原因</th></tr></thead><tbody><tr><td>PC = <code>0x00000000</code></td><td>段未擦写或被丢，取到 0</td></tr><tr><td>PC = <code>0xFFFFFFFF</code></td><td>Flash 空区，段被丢</td></tr><tr><td>PC 在合法函数内崩</td><td>不是段问题，查函数内部</td></tr><tr><td>map 里搜不到 <code>rti_fn</code></td><td>链接脚本没 KEEP</td></tr><tr><td>只有哨兵没有中间项</td><td>所有 <code>INIT_*_EXPORT</code> 都没生效</td></tr></tbody></table></div><p>排查顺序：<strong>看 map → 看 Flash → 查链接脚本</strong>。三步里基本第二步就能定性。</p></section><footer class="article-meta article-footer"><section class=article-tags><a href=/tags/rt-thread/>RT-Thread</a>
+<a href=/tags/hardfault/>HardFault</a>
+<a href=/tags/%E8%B0%83%E8%AF%95/>调试</a>
+<a href=/tags/%E9%93%BE%E6%8E%A5%E8%84%9A%E6%9C%AC/>链接脚本</a></section><section class="article-copyright inline-meta"><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>本文采用 <a class=link href=https://creativecommons.org/licenses/by-nc-sa/4.0/ target=_blank rel=noopener>CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</span></section></footer></article><aside><h2 class=section-title>相关文章</h2><div class=subsection-list><div class=article-list--tile><article><a href=/portfolio/%E5%85%89%E4%BC%8F-dtu-%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E7%BB%88%E7%AB%AF/><div class=article-details><h2 class=article-title>光伏 DTU 数据采集终端</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2026 summDy 工作室</section><section class=powerby>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=4.0.3>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><script type=module>
+    import gallery from '\/ts\/gallery.js';
+
+    const articleContent = document.querySelector('.article-content');
+    const shouldLoad = articleContent && (articleContent.querySelectorAll('figure').length > 0 || articleContent.querySelectorAll('img.gallery-image').length > 0);
+    
+    if (shouldLoad) {
+        gallery(articleContent);
+
+        const PhotoSwipeLightbox = (await import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js")).default;
+        const styleHref = "https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.css";
+
+        const styleTag = document.createElement('link');
+        styleTag.rel = 'stylesheet';
+        styleTag.href = styleHref;
+        document.head.appendChild(styleTag);
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallerySelector: '.article-content',
+            childSelector: 'figure a.image-link',
+            pswpModule: () => import("https:\/\/cdn.jsdelivr.net\/npm\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js")
+        });
+        lightbox.init();
+    }
+</script></main></div><script type=text/javascript src=/ts/main.f856840516f7c2ad1769a8f5937e3d08d6cb386e2cd2dd025ae696e0ff207958.js defer></script></body></html>
