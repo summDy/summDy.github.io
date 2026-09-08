@@ -5,17 +5,20 @@
 
 ---
 
-## ⚠️ 部署前必读：Pages 源必须设为 GitHub Actions
+## ⚠️ 部署前必读：Pages 源必须选 gh-pages 分支
 
-站点由 `.github/workflows/hugo.yml` 构建（Hugo → Pagefind 索引 → 上传产物 → 部署）。
-因此仓库 **Settings → Pages → Source** 必须选 **`GitHub Actions`**。
+站点由 `.github/workflows/hugo.yml` 构建并发布到 **`gh-pages` 分支**
+（Hugo → Pagefind 索引 → `.nojekyll` → force push 到 `gh-pages`）。
 
-如果还是旧的 **「Deploy from a branch / master 根目录」**，GitHub 会用 Jekyll 把 `README.md`
-渲染成首页，Hugo 的产物一个都不会上线 —— 表现就是 `/search/`、`/post/`、`/portfolio/`
-全部 404，只有首页能打开（而且内容是本文件）。
+仓库 **Settings → Pages → Build and deployment → Source** 选
+**`Deploy from a branch`**，分支选 **`gh-pages`**，目录 **`/ (root)`**。
 
-切换步骤：仓库 **Settings → Pages → Build and deployment → Source → 选 `GitHub Actions`**，
-然后到 **Actions** 页手动跑一次 `部署 Hugo 站点到 GitHub Pages`（Run workflow），或往 `master` 推一次提交。
+> 为什么不用「GitHub Actions」源？之前踩过坑：选了分支源时，GitHub 会用
+> Jekyll 把 `README.md` 渲染成首页，Hugo 产物一个都不上线，`/search/` 全 404；
+> 而改到 gh-pages 分支 + `.nojekyll` 后，分支里只有纯静态文件，Jekyll 不再插手。
+
+提交到 `master` 即触发 Actions，自动构建并推到 `gh-pages`；再到 Pages 设置里选好
+分支，首次稍等一两分钟即可访问 `https://summdy.github.io`。
 
 ---
 
@@ -79,7 +82,8 @@ Mermaid 图直接用 ```mermaid 代码块即可，脚本按需加载。
 
 ## 部署
 
-推到 `master` 分支即触发 Actions：Hugo 构建 → Pagefind 建索引 → 部署到 Pages。
-分支根目录下的文件不会被直接发布，改 README 不会更新线上首页。
+推到 `master` 分支即触发 Actions：Hugo 构建 → Pagefind 建索引 → force push 到 `gh-pages`
+分支。Pages 源指向 `gh-pages` 后即对外服务。分支根目录的文件不会被直接发布，
+改 `README.md` 不会更新线上首页。
 
 > GitHub Pages 国内访问不稳定。需要加速可把 `public/` 再部署一份到 Cloudflare Pages 或 Vercel。
