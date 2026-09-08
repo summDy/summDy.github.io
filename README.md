@@ -1,112 +1,85 @@
-# summDy 的个人站点
+# summDy 工作室站点
 
-纯静态、零构建的个人主页 + 技术博客。没有 npm、没有打包器、没有框架，改完文件直接推送到 GitHub Pages 就生效。
+[Hugo](https://gohugo.io/) + [Stack](https://github.com/CaiJimmy/hugo-theme-stack) 主题构建的工作室门面与技术博客，部署在 GitHub Pages。
+访问地址：<https://summdy.github.io>
 
-页面内容全部由 `data/` 下的三个 JSON 驱动，**平时不需要碰 HTML 和 CSS**。
+---
+
+## ⚠️ 部署前必读：Pages 源必须设为 GitHub Actions
+
+站点由 `.github/workflows/hugo.yml` 构建（Hugo → Pagefind 索引 → 上传产物 → 部署）。
+因此仓库 **Settings → Pages → Source** 必须选 **`GitHub Actions`**。
+
+如果还是旧的 **「Deploy from a branch / master 根目录」**，GitHub 会用 Jekyll 把 `README.md`
+渲染成首页，Hugo 的产物一个都不会上线 —— 表现就是 `/search/`、`/post/`、`/portfolio/`
+全部 404，只有首页能打开（而且内容是本文件）。
+
+切换步骤：仓库 **Settings → Pages → Build and deployment → Source → 选 `GitHub Actions`**，
+然后到 **Actions** 页手动跑一次 `部署 Hugo 站点到 GitHub Pages`（Run workflow），或往 `master` 推一次提交。
+
+---
 
 ## 目录结构
 
 ```
 summDy.github.io/
-├── index.html              # 唯一页面（首页与文章页共用，靠 hash 路由切换）
-├── data/
-│   ├── site.json           # 个人信息：姓名、简介、社交、技能、终端装饰
-│   ├── projects.json       # 项目卡片列表
-│   └── articles.json       # 文章元数据（标题、摘要、标签、日期、文件名）
-├── articles/               # Markdown 正文，一个文件一篇
-├── assets/
-│   ├── css/style.css       # 全部样式（设计变量集中在文件顶部）
-│   ├── js/app.js           # 路由、搜索、代码高亮、目录、深浅色
-│   └── vendor/             # marked + highlight.js 本地副本，不依赖 CDN
-└── README.md
+├── hugo.toml               # 站点主配置（菜单、侧栏、工作室门面、评论、搜索）
+├── content/
+│   ├── post/               # 技术笔记，按二级目录分栏目
+│   ├── portfolio/          # 作品集（案例卡片）
+│   ├── about/index.md      # 服务与合作
+│   ├── archives/index.md   # 归档页
+│   └── search/index.md     # 搜索页（front matter 里 outputs 必须含 json）
+├── layouts/                # 对 Stack 主题的覆盖：首页 Hero、能力区、案例卡片等
+├── static/                 # 直接拷贝的静态资源（favicon、mermaid）
+├── themes/hugo-theme-stack/
+└── .github/workflows/hugo.yml
 ```
 
 ## 本地预览
 
-必须通过 http 服务打开（Markdown 与 JSON 用 `fetch` 加载，`file://` 会被浏览器拦住）：
+需要 **Hugo Extended ≥ 0.157.0**（主题用了 `js.Build` 与 SCSS）：
 
 ```bash
-python -m http.server 8080
-# 浏览器打开 http://localhost:8080
+hugo server -D          # http://localhost:1313
 ```
 
-## 改内容
+本地 `hugo server` 下 Pagefind 索引不存在，搜索页会自动回退到主题自带的 Fuse 搜索，属正常现象。
 
-### 1. 个人信息 —— `data/site.json`
+## 写作
 
-| 字段 | 说明 |
-| --- | --- |
-| `name` / `handle` | 站点名，同时用于标题与页脚 |
-| `avatar` | 头像 URL，留空则自动用首字母方块 |
-| `role` / `eyebrow` / `tagline` | 首屏的三行文案 |
-| `intro` | 「关于」段落 |
-| `socials` | 社交链接，`icon` 支持 `github` / `gitee` / `mail` |
-| `skills` | 技能分组，每组 `{ group, items[] }` |
-| `terminal` | 首屏右侧终端装饰的行，`type` 为 `cmd` / `out` / `ok` |
-
-### 2. 项目 —— `data/projects.json`
-
-数组，每项：
-
-```json
-{
-  "title": "项目名",
-  "summary": "一两句话说清做了什么、用什么做的",
-  "tags": ["标签1", "标签2"],
-  "year": "2026",
-  "status": "在研",
-  "link": "https://github.com/..."
-}
+```bash
+hugo new post/embedded/xxx.md
 ```
 
-### 3. 文章 —— 两步
+推荐 front matter：
 
-**第一步**：在 `articles/` 下新建 Markdown 文件，例如 `dlt698-parser.md`。
-
-**第二步**：在 `data/articles.json` 里登记一条：
-
-```json
-{
-  "title": "DLT698 协议解析踩坑记录",
-  "summary": "对象标识 OI 的编码规则，以及和 DL/T645 转换时的几个坑。",
-  "file": "dlt698-parser.md",
-  "date": "2026-09-03",
-  "tags": ["DLT698", "协议"]
-}
+```yaml
+---
+title: "标题"
+date: 2026-09-03
+categories: ["嵌入式"]
+tags: ["RT-Thread", "HardFault"]
+description: "用于列表页与 SEO 的一句话摘要"
+image: "cover.jpg"    # 可选，放在同目录
+---
 ```
 
-字段说明：
+Mermaid 图直接用 ```mermaid 代码块即可，脚本按需加载。
 
-- `file` 必须和 `articles/` 里的文件名完全一致
-- `date` 用 `YYYY-MM-DD`，列表按日期倒序自动排
-- `tags` 是数组；标签栏和筛选器会自动从所有文章里收集
-- 阅读时长按正文自动估算，不用手填
+## 搜索
 
-## Markdown 支持
+两套方案并存，页面自动探测：
 
-- 代码高亮：\`\`\`c / \`\`\`cpp / \`\`\`asm 等语言标注，基于本地 highlight.js，右上角有一键复制
-- 表格、引用、任务列表、删除线（GFM 语法）
-- 文章自动生成右侧目录（标题数 ≥ 2 时出现）
-
-## 设计调整
-
-所有颜色写在 `assets/css/style.css` 顶部的 `:root[data-theme="light"]` 和
-`:root[data-theme="dark"]` 里，改这些变量就能整体换色：
-
-| 变量 | 作用 |
-| --- | --- |
-| `--accent` / `--accent-2` | 主色与渐变色（靛蓝 → 紫） |
-| `--bg` / `--bg-soft` / `--surface` | 背景与卡片底色 |
-| `--text` / `--text-2` / `--text-3` | 三级文字灰阶 |
-| `--border` / `--border-strong` | 描边 |
-| `--maxw` | 内容最大宽度 |
+1. **Pagefind**（默认）：构建时生成索引，中文分词更好。由 CI 里的
+   `npx pagefind@1.5.2 --site public --output-subdir pagefind` 生成，需
+   `hugo.toml` 中 `params.pagefind.enabled = true`。
+   只有带 `data-pagefind-body` 的块会被索引（见 `layouts/_partials/article/article.html`）。
+2. **Fuse**（回退）：主题自带，读 `/search/index.json`，本地预览与索引缺失时生效。
 
 ## 部署
 
-推送到 `master` 分支，GitHub Pages 自动生效。
+推到 `master` 分支即触发 Actions：Hugo 构建 → Pagefind 建索引 → 部署到 Pages。
+分支根目录下的文件不会被直接发布，改 README 不会更新线上首页。
 
-仓库名是 `summDy.github.io`，Pages 源选 `master` 分支的根目录，访问地址即
-`https://summdy.github.io`。
-
-> 注：GitHub Pages 国内访问速度不稳定。若在意，可把同一份静态文件再部署一份到
-> Cloudflare Pages 或 Vercel（两者都支持直接导入 GitHub 仓库，无需改动代码）。
+> GitHub Pages 国内访问不稳定。需要加速可把 `public/` 再部署一份到 Cloudflare Pages 或 Vercel。

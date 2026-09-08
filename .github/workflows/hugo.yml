@@ -46,11 +46,38 @@ jobs:
         env:
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
-        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+        # 先清空 public：避免上一次构建的残留文件被一起发布
+        run: |
+          rm -rf public
+          hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: 生成 Pagefind 搜索索引
         # 版本与本地一致（本地用 npm i pagefind 装的），避免 CI 拉到不兼容的新版
         run: npx -y pagefind@1.5.2 --site public --output-subdir pagefind
+
+      - name: 校验构建产物
+        # 之前踩过的坑：Pages 源还是「分支 + Jekyll」时，Hugo 产物一个都没上线，
+        # 首页是 README 渲染出来的，/search/ 等页面全 404。这里提前把关键产物卡住。
+        run: |
+          set -e
+          missing=0
+          check() {
+            if [ -f "$1" ]; then
+              echo "OK   $1"
+            else
+              echo "::error::$1 缺失 —— $2"
+              missing=1
+            fi
+          }
+          check public/index.html "站点未成功构建"
+          check public/search/index.html "搜索页未生成"
+          check public/search/index.json "Fuse 回退数据源缺失，检查 content/search/index.md 的 outputs 是否含 json"
+          check public/pagefind/pagefind-entry.json "Pagefind 索引未生成"
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::构建产物不完整，终止部署"
+            exit 1
+          fi
+          echo "构建产物校验通过"
 
       - name: 上传产物
         uses: actions/upload-pages-artifact@v3
